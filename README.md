@@ -1,4 +1,4 @@
-<img width="1501" height="897" alt="image" src="https://github.com/user-attachments/assets/ce14353f-978b-49f7-973a-1f48fd14b1da" /># Smart Device Analytics Platform con Microsoft Fabric
+# Smart Device Analytics Platform con Microsoft Fabric
 
 Proyecto end-to-end de **ingeniería de datos y analítica** desarrollado con **Microsoft Fabric**, implementando una arquitectura tipo **Medallion Architecture** con capas **Bronze, Silver y Gold**.
 
