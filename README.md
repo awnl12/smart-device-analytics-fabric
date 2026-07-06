@@ -380,7 +380,7 @@ La capa Bronze fue conectada a Microsoft Fabric mediante un **OneLake Shortcut**
 - Creación de Shortcut en OneLake hacia ADLS Gen2.
 - Preparación del Lakehouse Bronze en Fabric.
 
- ** RESOURCE GROUP DE AZURE DEL PROYECTO**
+ **RESOURCE GROUP DE AZURE DEL PROYECTO**
 
 <img width="1147" height="432" alt="image" src="https://github.com/user-attachments/assets/52091fd0-eb0e-4857-8532-826aef7aac43" />
 
@@ -498,7 +498,8 @@ Estos notebooks permiten reutilizar código y evitar repetir lógica en cada not
 
 Este notebook se utiliza desde el pipeline de ingesta cuando la validación de carpeta falla.
 
-<img width="1004" height="533" alt="image" src="https://github.com/user-attachments/assets/4e605573-6f5f-47c4-99fa-044399cd72a8" />
+<img width="1026" height="207" alt="image" src="https://github.com/user-attachments/assets/c4a9e981-5865-401f-bf67-d7f6035ff1e1" />
+
 
 ---
 
@@ -608,14 +609,14 @@ Generar dimensiones y tabla de hechos
 Escribir tablas finales en Gold
 ```
 
- **ICARPETA TRANSFORMATION CON NOTEBOOKS DE TRANSFORMACIÓN**
+ **CARPETA TRANSFORMATION CON NOTEBOOKS DE TRANSFORMACIÓN**
 
 <img width="1040" height="394" alt="image" src="https://github.com/user-attachments/assets/f1bbddab-36e5-4fed-b735-ecaec5e58ccc" />
 
 
 ---
 
- **IMAGEN 16 - NOTEBOOK DE TRANSFORMACIÓN CON CÓDIGO PYSPARK**
+ **NOTEBOOK DE TRANSFORMACIÓN CON CÓDIGO PYSPARK**
 
 <img width="1160" height="529" alt="image" src="https://github.com/user-attachments/assets/3d822b31-c228-468d-ad57-ea45864a0e5e" />
 <img width="1028" height="733" alt="image" src="https://github.com/user-attachments/assets/746b6197-be0a-4be9-b783-fd6072cf36ae" />
@@ -664,7 +665,7 @@ cj_smart_device
 
 Este componente permitió explorar una alternativa para copiar datos dentro del ecosistema de Fabric y comparar sus limitaciones frente a pipelines y notebooks.
 
- ** COPY JOB CJ_SMART_DEVICE**
+ **COPY JOB CJ_SMART_DEVICE**
 
 <img width="1036" height="206" alt="image" src="https://github.com/user-attachments/assets/dcd007fc-f080-4c9a-9dc0-f1f7ad5063a7" />
 
@@ -1504,23 +1505,7 @@ Componentes implementados:
 
 ---
 
-## Nota sobre seguridad
 
-Este repositorio no incluye credenciales, claves de acceso, cadenas de conexión ni información sensible.
-
-Antes de subir capturas al repositorio, se recomienda ocultar:
-
-- Correo personal.
-- Subscription ID.
-- Tenant ID.
-- Nombres internos sensibles.
-- Claves de acceso.
-- URLs privadas.
-- Identificadores internos del workspace.
-- Información privada de Azure.
-- Información privada de Microsoft Fabric.
-
----
 
 ## Autor
 
@@ -1529,3 +1514,5 @@ Desarrollado por: jORGE MARROQUIN RODRIGUEZ
 LinkedIn: www.linkedin.com/in/marroquinrj
 
 GitHub: awnl12
+
+Gracias por tomarte el tiempo de ver mi proyecto
