@@ -1,4 +1,4 @@
-# Smart Device Analytics Platform con Microsoft Fabric
+<img width="1501" height="897" alt="image" src="https://github.com/user-attachments/assets/ce14353f-978b-49f7-973a-1f48fd14b1da" /># Smart Device Analytics Platform con Microsoft Fabric
 
 Proyecto end-to-end de **ingeniería de datos y analítica** desarrollado con **Microsoft Fabric**, implementando una arquitectura tipo **Medallion Architecture** con capas **Bronze, Silver y Gold**.
 
@@ -145,43 +145,25 @@ Posteriormente, esta ubicación fue conectada con Microsoft Fabric mediante un *
 
 ### Evidencia del dataset y carga inicial
 
-📌 **IMAGEN 01 - FUENTE DEL DATASET EN KAGGLE**
+ *FUENTE DEL DATASET EN KAGGLE**
 
-Descripción exacta de la imagen que debes pegar aquí:
-
-- Captura de Kaggle mostrando el dataset Smart Device.
-- Debe verse el nombre del dataset o la página de origen.
-
-**PEGAR IMAGEN AQUÍ**
+<img width="984" height="833" alt="image" src="https://github.com/user-attachments/assets/c909bd7f-f1d7-474c-ab0e-02125d4488c5" />
 
 ---
 
-📌 **IMAGEN 02 - AZURE STORAGE EXPLORER CON LOS ARCHIVOS CARGADOS**
+ **AZURE STORAGE EXPLORER CON LOS ARCHIVOS CARGADOS**
 
-Descripción exacta de la imagen que debes pegar aquí:
 
-- Captura de Azure Storage Explorer.
-- Deben verse los archivos del dataset cargados hacia el contenedor o carpeta del proyecto.
-- Esta imagen demuestra que el dataset fue cargado manualmente hacia ADLS Gen2.
 
-**PEGAR IMAGEN AQUÍ**
+<img width="1567" height="411" alt="image" src="https://github.com/user-attachments/assets/58af62bb-82e5-4b67-bf56-7dbd4c1d8ec1" />
+
 
 ---
 
-📌 **IMAGEN 03 - CONTENEDOR EN AZURE DATA LAKE STORAGE GEN2 CON CARPETAS POR FECHA**
+ **CONTENEDOR EN AZURE DATA LAKE STORAGE GEN2 CON CARPETAS POR FECHA**
 
-Descripción exacta de la imagen que debes pegar aquí:
+<img width="1905" height="510" alt="image" src="https://github.com/user-attachments/assets/83a74e64-e1ac-485e-abef-330866f8d5cb" />
 
-- Captura del contenedor `smart-device`.
-- Debe verse la carpeta `bronze-data`.
-- Deben verse carpetas como:
-  - `2025-07-07`
-  - `2025-07-14`
-  - `2025-07-21`
-
-**PEGAR IMAGEN AQUÍ**
-
----
 
 ## Arquitectura de la solución
 
@@ -226,24 +208,10 @@ Semantic Model
 Power BI
 ```
 
-📌 **IMAGEN 04 - DIAGRAMA DE ARQUITECTURA DEL PROYECTO**
+ **DIAGRAMA DE ARQUITECTURA DEL PROYECTO**
 
-Descripción exacta de la imagen que debes pegar aquí:
+<img width="1107" height="511" alt="image" src="https://github.com/user-attachments/assets/483e585b-df50-427c-82d9-42441f6ef948" />
 
-- Diagrama propio que muestre el flujo completo.
-- Debe verse algo parecido a:
-  - Kaggle / ADLS Gen2
-  - OneLake Shortcut
-  - Bronze
-  - Silver
-  - Gold
-  - Warehouse
-  - Semantic Model
-  - Power BI
-
-**PEGAR IMAGEN AQUÍ**
-
----
 
 ## Tecnologías utilizadas
 
@@ -333,43 +301,11 @@ Smart_Device_Analytics_WS/
 └── sm_smart_device_wh
 ```
 
-> Nota: El elemento `06.Ingestion_file_operationg_system` conserva el nombre utilizado dentro del proyecto, aunque contiene un error tipográfico en la palabra `operationg`.
 
-📌 **IMAGEN 05 - ESTRUCTURA GENERAL DEL WORKSPACE EN MICROSOFT FABRIC**
+ **ESTRUCTURA GENERAL DEL WORKSPACE EN MICROSOFT FABRIC**
 
-Descripción exacta de la imagen que debes pegar aquí:
+<img width="1306" height="513" alt="image" src="https://github.com/user-attachments/assets/d7acf018-aa20-4f14-b6b7-5f2fd0a3acc2" />
 
-- Captura del workspace donde se vean las carpetas:
-  - `copy_job`
-  - `dataflow gen2`
-  - `notebook`
-  - `pipeline`
-  - `report`
-- También deben verse elementos como:
-  - `lh_bronze`
-  - `lh_silver`
-  - `lh_gold`
-  - `wh_smart_device`
-  - `sm_smart_device_wh`
-
-**PEGAR IMAGEN AQUÍ**
-
----
-
-📌 **IMAGEN 06 - CARPETA NOTEBOOK CON SUBCARPETAS**
-
-Descripción exacta de la imagen que debes pegar aquí:
-
-- Captura dentro de la carpeta `notebook`.
-- Deben verse las carpetas:
-  - `email`
-  - `includes`
-  - `ingestion`
-  - `transformation`
-
-**PEGAR IMAGEN AQUÍ**
-
----
 
 ## Flujo general del proyecto
 
@@ -444,33 +380,17 @@ La capa Bronze fue conectada a Microsoft Fabric mediante un **OneLake Shortcut**
 - Creación de Shortcut en OneLake hacia ADLS Gen2.
 - Preparación del Lakehouse Bronze en Fabric.
 
-📌 **IMAGEN 07 - RESOURCE GROUP DE AZURE DEL PROYECTO**
+ ** RESOURCE GROUP DE AZURE DEL PROYECTO**
 
-Descripción exacta de la imagen que debes pegar aquí:
+<img width="1147" height="432" alt="image" src="https://github.com/user-attachments/assets/52091fd0-eb0e-4857-8532-826aef7aac43" />
 
-- Captura del grupo de recursos de Azure.
-- Debe verse la cuenta de almacenamiento usada para el proyecto.
-- Antes de subirla, ocultar:
-  - correo
-  - subscription ID
-  - tenant ID
-  - datos personales
-
-**PEGAR IMAGEN AQUÍ**
 
 ---
 
-📌 **IMAGEN 08 - CARPETAS DE BRONZE EN AZURE DATA LAKE STORAGE GEN2**
+**CARPETAS DE BRONZE EN AZURE DATA LAKE STORAGE GEN2**
 
-Descripción exacta de la imagen que debes pegar aquí:
+<img width="1905" height="510" alt="image" src="https://github.com/user-attachments/assets/bd001901-feaf-4aed-a234-07ae1d6f3986" />
 
-- Captura del contenedor `smart-device`.
-- Debe verse:
-  - `bronze-data`
-  - carpetas por fecha
-  - archivos o estructura del dataset
-
-**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -508,14 +428,9 @@ Los notebooks de ingesta procesaron los siguientes archivos:
 | Display | Características de pantalla |
 | Physical Specs | Especificaciones físicas |
 
-📌 **IMAGEN 09 - LAKEHOUSE SILVER CON TABLAS GENERADAS**
+ **LAKEHOUSE SILVER CON TABLAS GENERADAS**
 
-Descripción exacta de la imagen que debes pegar aquí:
-
-- Captura del Lakehouse `lh_silver`.
-- Deben verse las tablas generadas por los notebooks de ingesta.
-
-**PEGAR IMAGEN AQUÍ**
+<img width="1771" height="765" alt="image" src="https://github.com/user-attachments/assets/c9398aa4-2a24-4f32-ab4d-6bb37f6a9c98" />
 
 ---
 
@@ -541,23 +456,10 @@ Algunas de las tablas generadas fueron:
 | dim_physical_specs | Dimensión | Especificaciones físicas |
 | dim_time | Dimensión | Dimensión de calendario |
 
-📌 **IMAGEN 10 - LAKEHOUSE GOLD CON TABLAS FINALES**
+ **LAKEHOUSE GOLD CON TABLAS FINALES**
 
-Descripción exacta de la imagen que debes pegar aquí:
+<img width="1717" height="863" alt="image" src="https://github.com/user-attachments/assets/f58ffb74-a4e5-423e-8a48-6015353d4ee4" />
 
-- Captura de `lh_gold`.
-- Deben verse tablas como:
-  - `fact_device`
-  - `dim_category`
-  - `dim_model`
-  - `dim_brand`
-  - `dim_camera`
-  - `dim_display`
-  - `dim_operating_system`
-  - `dim_physical_specs`
-  - `dim_time`
-
-**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -581,16 +483,10 @@ Los notebooks fueron organizados en cuatro grupos:
 
 Estos notebooks permiten reutilizar código y evitar repetir lógica en cada notebook de ingesta o transformación.
 
-📌 **IMAGEN 11 - CARPETA INCLUDES CON CONFIGURATION Y COMMON_FUNCTIONS**
+ **CARPETA INCLUDES CON CONFIGURATION Y COMMON_FUNCTIONS**
 
-Descripción exacta de la imagen que debes pegar aquí:
+<img width="1034" height="282" alt="image" src="https://github.com/user-attachments/assets/b8ba90ea-0b38-4278-a98d-9f132faac502" />
 
-- Captura dentro de `notebook/includes`.
-- Deben verse:
-  - `configuration`
-  - `common_functions`
-
-**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -602,14 +498,7 @@ Descripción exacta de la imagen que debes pegar aquí:
 
 Este notebook se utiliza desde el pipeline de ingesta cuando la validación de carpeta falla.
 
-📌 **IMAGEN 12 - NOTEBOOK EMAIL ERROR**
-
-Descripción exacta de la imagen que debes pegar aquí:
-
-- Captura del notebook `email ERROR`.
-- Debe verse que está relacionado con el envío de correo o notificación de error.
-
-**PEGAR IMAGEN AQUÍ**
+<img width="1004" height="533" alt="image" src="https://github.com/user-attachments/assets/4e605573-6f5f-47c4-99fa-044399cd72a8" />
 
 ---
 
@@ -669,26 +558,19 @@ file_date = 2025-07-07
 environment = Development
 ```
 
-📌 **IMAGEN 13 - CARPETA INGESTION CON NOTEBOOKS DE INGESTA**
+ **CARPETA INGESTION CON NOTEBOOKS DE INGESTA**
 
-Descripción exacta de la imagen que debes pegar aquí:
-
-- Captura dentro de `notebook/ingestion`.
-- Deben verse los notebooks de ingesta listados.
-
-**PEGAR IMAGEN AQUÍ**
+<img width="1022" height="505" alt="image" src="https://github.com/user-attachments/assets/14ea1217-096c-49f2-a826-8b699d816b77" />
 
 ---
 
-📌 **IMAGEN 14 - NOTEBOOK DE INGESTA CON CÓDIGO PYSPARK**
+ **NOTEBOOK DE INGESTA CON CÓDIGO PYSPARK**
 
-Descripción exacta de la imagen que debes pegar aquí:
+<img width="877" height="916" alt="image" src="https://github.com/user-attachments/assets/9cf0584a-690c-4291-bee3-7bd66c9a0a27" />
+<img width="825" height="777" alt="image" src="https://github.com/user-attachments/assets/dbd440c7-353f-4893-87f8-612d8aeda6d4" />
+<img width="1013" height="818" alt="image" src="https://github.com/user-attachments/assets/1e63c2a2-ed7e-4558-bbc0-fed391e431ed" />
 
-- Captura de un notebook de ingesta abierto.
-- Debe verse código PySpark leyendo datos, aplicando schema o escribiendo en Delta.
-- No es necesario mostrar todo el notebook, solo una parte representativa.
 
-**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -726,29 +608,18 @@ Generar dimensiones y tabla de hechos
 Escribir tablas finales en Gold
 ```
 
-📌 **IMAGEN 15 - CARPETA TRANSFORMATION CON NOTEBOOKS DE TRANSFORMACIÓN**
+ **ICARPETA TRANSFORMATION CON NOTEBOOKS DE TRANSFORMACIÓN**
 
-Descripción exacta de la imagen que debes pegar aquí:
+<img width="1040" height="394" alt="image" src="https://github.com/user-attachments/assets/f1bbddab-36e5-4fed-b735-ecaec5e58ccc" />
 
-- Captura dentro de `notebook/transformation`.
-- Deben verse los notebooks de transformación.
-
-**PEGAR IMAGEN AQUÍ**
 
 ---
 
-📌 **IMAGEN 16 - NOTEBOOK DE TRANSFORMACIÓN CON CÓDIGO PYSPARK**
+ **IMAGEN 16 - NOTEBOOK DE TRANSFORMACIÓN CON CÓDIGO PYSPARK**
 
-Descripción exacta de la imagen que debes pegar aquí:
+<img width="1160" height="529" alt="image" src="https://github.com/user-attachments/assets/3d822b31-c228-468d-ad57-ea45864a0e5e" />
+<img width="1028" height="733" alt="image" src="https://github.com/user-attachments/assets/746b6197-be0a-4be9-b783-fd6072cf36ae" />
 
-- Captura de un notebook de transformación abierto.
-- Puede ser:
-  - `02.Transformation_table_device`
-  - `03.Transformation_table_model`
-  - `06.Create_dim_time`
-- Debe verse lógica de transformación, merge, escritura o creación de dimensión.
-
-**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -767,34 +638,17 @@ Los Dataflows creados fueron:
 
 Estos Dataflows forman parte del pipeline de transformación y cargan datos hacia la capa Gold.
 
-📌 **IMAGEN 17 - CARPETA DATAFLOW GEN2 CON LOS 4 DATAFLOWS**
+ **CARPETA DATAFLOW GEN2 CON LOS 4 DATAFLOWS**
 
-Descripción exacta de la imagen que debes pegar aquí:
+<img width="1023" height="348" alt="image" src="https://github.com/user-attachments/assets/ba7c34db-7b4e-4e4a-b30f-57cf666f0876" />
 
-- Captura dentro de `dataflow gen2`.
-- Deben verse:
-  - `01-Transformation_table_brand`
-  - `02-Transformation_table_camera`
-  - `03-Transformation_table_connectivity`
-  - `04-Transformation_table_operating_system`
-
-**PEGAR IMAGEN AQUÍ**
 
 ---
 
-📌 **IMAGEN 18 - EJEMPLO DE DATAFLOW GEN2 ABIERTO**
+ **EJEMPLO DE DATAFLOW GEN2 ABIERTO**
 
-Descripción exacta de la imagen que debes pegar aquí:
+<img width="1866" height="677" alt="image" src="https://github.com/user-attachments/assets/0a1be57b-eb18-4760-93fe-f7f262194c10" />
 
-- Captura de un Dataflow Gen2 abierto.
-- Debe verse Power Query o el flujo de transformación.
-- Puede ser cualquiera de:
-  - Brand
-  - Camera
-  - Connectivity
-  - Operating System
-
-**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -810,15 +664,10 @@ cj_smart_device
 
 Este componente permitió explorar una alternativa para copiar datos dentro del ecosistema de Fabric y comparar sus limitaciones frente a pipelines y notebooks.
 
-📌 **IMAGEN 19 - COPY JOB CJ_SMART_DEVICE**
+ ** COPY JOB CJ_SMART_DEVICE**
 
-Descripción exacta de la imagen que debes pegar aquí:
+<img width="1036" height="206" alt="image" src="https://github.com/user-attachments/assets/dcd007fc-f080-4c9a-9dc0-f1f7ad5063a7" />
 
-- Captura dentro de la carpeta `copy_job`.
-- Debe verse el elemento `cj_smart_device`.
-- También puede ser una captura del Copy Job abierto.
-
-**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -869,18 +718,10 @@ Los pipelines creados fueron:
 | pl_process_smart_device | Pipeline principal que invoca ingesta y transformación |
 | pl_report_smart_data | Pipeline relacionado con automatización del proceso de reporte |
 
-📌 **IMAGEN 20 - CARPETA PIPELINE CON LAS CANALIZACIONES CREADAS**
+**CARPETA PIPELINE CON LAS CANALIZACIONES CREADAS**
 
-Descripción exacta de la imagen que debes pegar aquí:
+<img width="1015" height="318" alt="image" src="https://github.com/user-attachments/assets/c49f2f71-a168-4d82-ac99-e19ccacb85ba" />
 
-- Captura dentro de `pipeline`.
-- Deben verse:
-  - `pl_ingest_smart_device`
-  - `pl_process_smart_device`
-  - `pl_report_smart_data`
-  - `pl_transformation_smart_device`
-
-**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -905,45 +746,26 @@ Si la carpeta existe, se ejecutan los notebooks de ingesta.
 
 Si la carpeta no existe, se ejecuta la notificación de error.
 
-📌 **IMAGEN 21 - PL_INGEST_SMART_DEVICE ABIERTO**
+ **PL_INGEST_SMART_DEVICE ABIERTO**
 
-Descripción exacta de la imagen que debes pegar aquí:
+<img width="1335" height="698" alt="image" src="https://github.com/user-attachments/assets/4124865f-31e3-470e-9fe6-0587d90e4499" />
 
-- Captura del pipeline de ingesta abierto.
-- Deben verse:
-  - `Get Folder Details`
-  - `If Condition`
-  - Notebooks de ingesta
-  - Ruta de error
 
-**PEGAR IMAGEN AQUÍ**
 
 ---
 
-📌 **IMAGEN 22 - IF CONDITION CON RUTA TRUE Y RUTA FALSE**
+ **IF CONDITION CON RUTA TRUE/RUTA FALSE Y CONFIG GET FOLDER DETAILS**
 
-Descripción exacta de la imagen que debes pegar aquí:
+<img width="1330" height="823" alt="image" src="https://github.com/user-attachments/assets/3e4b7665-89e4-4134-8dba-6275386347fd" />
 
-- Captura dentro de la condición IF.
-- Debe verse:
-  - En `True`: actividades de ingesta.
-  - En `False`: `emailError` o notebook de email.
+<img width="1423" height="771" alt="image" src="https://github.com/user-attachments/assets/da09094f-e9ca-4607-852d-5c83f58ffb73" />
 
-**PEGAR IMAGEN AQUÍ**
 
 ---
 
-📌 **IMAGEN 23 - PL_INGEST_SMART_DEVICE EJECUTADO CORRECTAMENTE**
+ **PL_INGEST_SMART_DEVICE EJECUTADO CORRECTAMENTE**
 
-Descripción exacta de la imagen que debes pegar aquí:
-
-- Captura de la salida del pipeline de ingesta.
-- Deben verse las actividades en estado:
-  - Correcto
-  - Verde
-  - Successful
-
-**PEGAR IMAGEN AQUÍ**
+<img width="1418" height="937" alt="image" src="https://github.com/user-attachments/assets/5fb7c569-f244-4c10-8c53-bacfec5a30ba" />
 
 ---
 
@@ -964,25 +786,15 @@ Procesos dentro del pipeline:
 - Transformación de dispositivos.
 - Creación de dimensión de tiempo.
 
-📌 **IMAGEN 24 - PL_TRANSFORMATION_SMART_DEVICE ABIERTO**
+ **PL_TRANSFORMATION_SMART_DEVICE ABIERTO**
 
-Descripción exacta de la imagen que debes pegar aquí:
-
-- Captura del pipeline de transformación.
-- Deben verse notebooks y Dataflows Gen2.
-
-**PEGAR IMAGEN AQUÍ**
+<img width="1595" height="590" alt="image" src="https://github.com/user-attachments/assets/0a8315f7-9c7f-492b-91bc-c7d5bbf6b6cc" />
 
 ---
 
-📌 **IMAGEN 25 - PL_TRANSFORMATION_SMART_DEVICE EJECUTADO CORRECTAMENTE**
+ **PL_TRANSFORMATION_SMART_DEVICE EJECUTADO CORRECTAMENTE**
 
-Descripción exacta de la imagen que debes pegar aquí:
-
-- Captura de la salida del pipeline de transformación.
-- Deben verse actividades en verde o con estado `Correcto`.
-
-**PEGAR IMAGEN AQUÍ**
+<img width="1920" height="953" alt="image" src="https://github.com/user-attachments/assets/34f4dc4c-d6ff-4451-95cc-7296c1541d71" />
 
 ---
 
@@ -1008,27 +820,17 @@ file_date
 environment
 ```
 
-📌 **IMAGEN 26 - PL_PROCESS_SMART_DEVICE CON INVOKE INGESTION E INVOKE TRANSFORMATION**
+ **PL_PROCESS_SMART_DEVICE CON INVOKE INGESTION E INVOKE TRANSFORMATION**
 
-Descripción exacta de la imagen que debes pegar aquí:
+<img width="1076" height="652" alt="image" src="https://github.com/user-attachments/assets/1123e65a-c6fe-4569-99ca-e91c09293799" />
 
-- Captura del pipeline principal.
-- Deben verse dos actividades:
-  - `Invoke Ingestion`
-  - `Invoke Transformation`
-
-**PEGAR IMAGEN AQUÍ**
 
 ---
 
-📌 **IMAGEN 27 - PL_PROCESS_SMART_DEVICE EJECUTADO CORRECTAMENTE**
+ **PL_PROCESS_SMART_DEVICE EJECUTADO CORRECTAMENTE**
 
-Descripción exacta de la imagen que debes pegar aquí:
+<img width="1357" height="714" alt="image" src="https://github.com/user-attachments/assets/c7966d8f-0a35-461c-a8d6-e08bee01d389" />
 
-- Captura del pipeline principal en ejecución exitosa.
-- Debe verse el estado de la canalización en correcto.
-
-**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -1038,14 +840,9 @@ El pipeline `pl_report_smart_data` fue utilizado para automatizar el proceso rel
 
 Este pipeline complementa el flujo principal, permitiendo integrar el procesamiento de datos con los elementos analíticos del proyecto.
 
-📌 **IMAGEN 28 - PL_REPORT_SMART_DATA**
+ **PL_REPORT_SMART_DATA**
 
-Descripción exacta de la imagen que debes pegar aquí:
-
-- Captura del pipeline `pl_report_smart_data`.
-- Debe verse la actividad o flujo relacionado con el reporte.
-
-**PEGAR IMAGEN AQUÍ**
+<img width="1068" height="710" alt="image" src="https://github.com/user-attachments/assets/3cca7eb5-a609-4cfa-9d30-62017f235353" />
 
 ---
 
@@ -1071,14 +868,8 @@ Enviar email de error
 
 Esto evita ejecutar procesos sobre datos inexistentes y permite notificar el problema.
 
-📌 **IMAGEN 29 - ACTIVIDAD O NOTEBOOK DE EMAIL ERROR**
+<img width="1004" height="533" alt="image" src="https://github.com/user-attachments/assets/c1b18764-2bb3-498b-a8eb-93252d91ecc1" />
 
-Descripción exacta de la imagen que debes pegar aquí:
-
-- Captura del notebook `email ERROR` o de la actividad del pipeline que lo ejecuta.
-- Debe quedar claro que el flujo envía un correo cuando falla la validación.
-
-**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -1092,14 +883,9 @@ wh_smart_device
 
 El Warehouse fue utilizado como parte de la capa analítica del proyecto y se integra con el modelo semántico y Power BI.
 
-📌 **IMAGEN 30 - WAREHOUSE WH_SMART_DEVICE**
+ <** WAREHOUSE WH_SMART_DEVICE**
 
-Descripción exacta de la imagen que debes pegar aquí:
-
-- Captura del elemento `wh_smart_device`.
-- Puede ser la vista del Warehouse o sus tablas.
-
-**PEGAR IMAGEN AQUÍ**
+<img width="1772" height="775" alt="image" src="https://github.com/user-attachments/assets/6cea2d74-6fb5-49c3-9a2f-bb7ca19c9b2f" />
 
 ---
 
@@ -1137,23 +923,16 @@ dim_time
 
 El modelo tiene una estructura tipo estrella, donde `fact_device` funciona como tabla central y se relaciona con las tablas de dimensión.
 
-📌 **IMAGEN 31 - MODELO SEMÁNTICO CON RELACIONES**
+ **MODELO SEMÁNTICO CON RELACIONES**
 
-Descripción exacta de la imagen que debes pegar aquí:
+<img width="1501" height="897" alt="image" src="https://github.com/user-attachments/assets/791ee3dd-d17d-4f8d-88aa-519c8f9ba5ff" />
 
-- Captura del modelo semántico.
-- Debe verse:
-  - `fact_device` en el centro.
-  - Dimensiones alrededor.
-  - Relaciones entre tablas.
-
-**PEGAR IMAGEN AQUÍ**
 
 ---
 
 ## Power BI Report y Dashboard
 
-Con el modelo semántico se construyó un reporte en Power BI para analizar características de los dispositivos inteligentes.
+Con el modelo semántico se construyó un AUTO-REPORT en Power BI para analizar características de los dispositivos inteligentes.
 
 Elementos creados:
 
@@ -1170,30 +949,17 @@ El reporte permite analizar características como:
 - Meses de lanzamiento.
 - Cantidad de dispositivos.
 
-📌 **IMAGEN 32 - REPORTE REPORT_DEVICE**
+ **REPORTE REPORT_DEVICE**
 
-Descripción exacta de la imagen que debes pegar aquí:
+<img width="1747" height="911" alt="image" src="https://github.com/user-attachments/assets/a69f6197-62ad-4a79-bf07-0a75f5290366" />
 
-- Captura del reporte `report_device`.
-- Deben verse gráficos de análisis.
-- Por ejemplo:
-  - video recording
-  - effective pixel
-  - refresh rate
-  - month name
-
-**PEGAR IMAGEN AQUÍ**
 
 ---
 
-📌 **IMAGEN 33 - DASHBOARD DASHBOARD_SMART_DEVICE**
+ **DASHBOARD DASHBOARD_SMART_DEVICE**
 
-Descripción exacta de la imagen que debes pegar aquí:
+<img width="757" height="802" alt="image" src="https://github.com/user-attachments/assets/69d745d9-f105-4deb-9ab0-132e32934f0e" />
 
-- Captura del dashboard `dashboard_smart_device`.
-- Deben verse visualizaciones publicadas en el dashboard.
-
-**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -1214,22 +980,10 @@ El Task Flow permite representar el proceso desde los datos de origen hasta la v
 - Visualización de datos.
 - Process Smart Data.
 
-📌 **IMAGEN 34 - TASK FLOW DEL PROYECTO**
+ **TASK FLOW DEL PROYECTO**
 
-Descripción exacta de la imagen que debes pegar aquí:
+<img width="1850" height="783" alt="image" src="https://github.com/user-attachments/assets/728da55d-2c13-415e-a99b-d8991e728898" />
 
-- Captura del Task Flow.
-- Deben verse bloques como:
-  - `Datos de bronce`
-  - `Proceso Ingesta`
-  - `Datos plateados`
-  - `Transformación adicional`
-  - `Datos de oro`
-  - `Warehouse`
-  - `Visualización de datos`
-  - `Process Smart Data`
-
-**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -1246,20 +1000,10 @@ Esta vista permite entender cómo se conectan los datos desde el origen hasta lo
 - Identificar impacto ante cambios.
 - Documentar el flujo completo de la solución.
 
-📌 **IMAGEN 35 - LINEAGE VIEW DEL PROYECTO**
+**LINEAGE VIEW DEL PROYECTO**
 
-Descripción exacta de la imagen que debes pegar aquí:
-
-- Captura de Lineage View.
-- Deben verse conexiones entre:
-  - Lakehouses
-  - Pipelines
-  - Warehouse
-  - Semantic Model
-  - Report
-  - Dashboard
-
-**PEGAR IMAGEN AQUÍ**
+<img width="1007" height="844" alt="image" src="https://github.com/user-attachments/assets/da46579e-7c42-4643-95f4-810428cf9a67" />
+<img width="1173" height="841" alt="image" src="https://github.com/user-attachments/assets/180ac5f3-a470-4b69-ba30-e32710e7e466" />
 
 ---
 
@@ -1283,18 +1027,9 @@ Esto permite simular un ciclo de vida más profesional para proyectos de datos y
 | Test | Workspace de pruebas |
 | Production | Workspace de producción |
 
-📌 **IMAGEN 36 - DEPLOYMENT PIPELINE DEV TEST PROD**
+**DEPLOYMENT PIPELINE DEV TEST PROD**
 
-Descripción exacta de la imagen que debes pegar aquí:
-
-- Captura del Deployment Pipeline.
-- Deben verse las tres etapas:
-  - Development
-  - Test
-  - Production
-- Debe verse implementación correcta o exitosa.
-
-**PEGAR IMAGEN AQUÍ**
+<img width="1920" height="953" alt="image" src="https://github.com/user-attachments/assets/12dea447-3f3d-4621-987a-6efea4aa7f0b" />
 
 ---
 
@@ -1602,7 +1337,8 @@ Resultados principales:
 - Lineage View revisado.
 - Deployment Pipeline aplicado entre Development, Test y Production.
 
-📌 **IMAGEN 37 - TODOS LOS PROCESOS EN ESTADO CORRECTO**
+<img width="1462" height="911" alt="image" src="https://github.com/user-attachments/assets/e71cd241-683a-4299-9756-b5687af72787" />
+
 
 Descripción exacta de la imagen que debes pegar aquí:
 
