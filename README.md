@@ -2,7 +2,7 @@
 
 Proyecto end-to-end de **ingeniería de datos y analítica** desarrollado con **Microsoft Fabric**, implementando una arquitectura tipo **Medallion Architecture** con capas **Bronze, Silver y Gold**.
 
-El proyecto utiliza un dataset de dispositivos inteligentes que contiene información histórica sobre smartphones, tablets, wearables y otros dispositivos. La solución permite cargar, transformar, modelar, orquestar y visualizar datos utilizando herramientas modernas del ecosistema de Microsoft Fabric.
+El proyecto utiliza un dataset de dispositivos inteligentes con información histórica sobre smartphones, tablets, wearables y otros dispositivos. La solución permite cargar, transformar, modelar, orquestar y visualizar datos utilizando herramientas modernas del ecosistema de Microsoft Fabric.
 
 Este proyecto fue desarrollado con fines académicos y de práctica profesional, complementando la implementación con resolución de errores reales, parametrización de notebooks, corrección de esquemas, manejo básico de errores, orquestación de pipelines y prácticas de deployment entre workspaces.
 
@@ -14,15 +14,18 @@ Este proyecto fue desarrollado con fines académicos y de práctica profesional,
 - [Dataset utilizado](#dataset-utilizado)
 - [Arquitectura de la solución](#arquitectura-de-la-solución)
 - [Tecnologías utilizadas](#tecnologías-utilizadas)
-- [Estructura del repositorio](#estructura-del-repositorio)
+- [Estructura del proyecto en Microsoft Fabric](#estructura-del-proyecto-en-microsoft-fabric)
 - [Flujo general del proyecto](#flujo-general-del-proyecto)
 - [Capa Bronze](#capa-bronze)
 - [Capa Silver](#capa-silver)
 - [Capa Gold](#capa-gold)
-- [Ingesta de datos](#ingesta-de-datos)
-- [Transformación de datos](#transformación-de-datos)
+- [Notebooks](#notebooks)
+- [Dataflows Gen2](#dataflows-gen2)
+- [Copy Job](#copy-job)
+- [Carga completa e incremental](#carga-completa-e-incremental)
 - [Orquestación con Pipelines](#orquestación-con-pipelines)
 - [Manejo de errores](#manejo-de-errores)
+- [Warehouse](#warehouse)
 - [Modelo semántico](#modelo-semántico)
 - [Power BI Report y Dashboard](#power-bi-report-y-dashboard)
 - [Task Flow](#task-flow)
@@ -32,6 +35,8 @@ Este proyecto fue desarrollado con fines académicos y de práctica profesional,
 - [Resultados obtenidos](#resultados-obtenidos)
 - [Aprendizajes principales](#aprendizajes-principales)
 - [Mejoras futuras](#mejoras-futuras)
+- [Estado del proyecto](#estado-del-proyecto)
+- [Nota sobre seguridad](#nota-sobre-seguridad)
 - [Autor](#autor)
 
 ---
@@ -81,11 +86,13 @@ El proyecto incluye:
 - Creación de Lakehouses para organizar datos por capas.
 - Procesamiento de datos con notebooks y PySpark.
 - Transformaciones con Dataflows Gen2 y Power Query.
+- Uso de Copy Job como alternativa de carga dentro de Fabric.
 - Implementación de cargas completas e incrementales.
 - Orquestación con Data Factory Pipelines.
 - Parametrización de procesos con `file_date` y `environment`.
 - Validación de carpetas antes de ejecutar la ingesta.
 - Notificación por correo electrónico en caso de error.
+- Creación de Warehouse.
 - Creación de modelo semántico.
 - Creación de reporte y dashboard en Power BI.
 - Organización del proyecto con Task Flow.
@@ -122,7 +129,7 @@ El dataset fue descargado desde Kaggle y cargado manualmente hacia **Azure Data 
 
 Los archivos fueron organizados dentro del contenedor del proyecto en carpetas por fecha de procesamiento.
 
-Ejemplo:
+Ejemplo de estructura en el Data Lake:
 
 ```text
 smart-device/
@@ -134,41 +141,45 @@ smart-device/
 
 Posteriormente, esta ubicación fue conectada con Microsoft Fabric mediante un **OneLake Shortcut**, permitiendo que el Lakehouse Bronze acceda a los archivos almacenados en ADLS Gen2.
 
+---
+
 ### Evidencia del dataset y carga inicial
 
-📌 **IMAGEN 01 - FUENTE DEL DATASET EN KAGGLE**  
-Guardar la imagen como:
+📌 **IMAGEN 01 - FUENTE DEL DATASET EN KAGGLE**
 
-```text
-docs/images/01_dataset_kaggle.png
-```
+Descripción exacta de la imagen que debes pegar aquí:
 
-Pegar aquí:
+- Captura de Kaggle mostrando el dataset Smart Device.
+- Debe verse el nombre del dataset o la página de origen.
 
-![Fuente del dataset en Kaggle](docs/images/01_dataset_kaggle.png)
+**PEGAR IMAGEN AQUÍ**
 
-📌 **IMAGEN 02 - AZURE STORAGE EXPLORER CON LOS ARCHIVOS CARGADOS**  
-Guardar la imagen como:
+---
 
-```text
-docs/images/02_azure_storage_explorer.png
-```
+📌 **IMAGEN 02 - AZURE STORAGE EXPLORER CON LOS ARCHIVOS CARGADOS**
 
-Pegar aquí:
+Descripción exacta de la imagen que debes pegar aquí:
 
-![Carga de archivos con Azure Storage Explorer](docs/images/02_azure_storage_explorer.png)
+- Captura de Azure Storage Explorer.
+- Deben verse los archivos del dataset cargados hacia el contenedor o carpeta del proyecto.
+- Esta imagen demuestra que el dataset fue cargado manualmente hacia ADLS Gen2.
 
-📌 **IMAGEN 03 - CONTENEDOR EN AZURE DATA LAKE STORAGE GEN2 CON CARPETAS POR FECHA**  
-Esta imagen debe mostrar carpetas como `2025-07-07`, `2025-07-14`, `2025-07-21`.  
-Guardar la imagen como:
+**PEGAR IMAGEN AQUÍ**
 
-```text
-docs/images/03_adls_bronze_folders.png
-```
+---
 
-Pegar aquí:
+📌 **IMAGEN 03 - CONTENEDOR EN AZURE DATA LAKE STORAGE GEN2 CON CARPETAS POR FECHA**
 
-![Carpetas Bronze en ADLS Gen2](docs/images/03_adls_bronze_folders.png)
+Descripción exacta de la imagen que debes pegar aquí:
+
+- Captura del contenedor `smart-device`.
+- Debe verse la carpeta `bronze-data`.
+- Deben verse carpetas como:
+  - `2025-07-07`
+  - `2025-07-14`
+  - `2025-07-21`
+
+**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -215,18 +226,22 @@ Semantic Model
 Power BI
 ```
 
-📌 **IMAGEN 04 - DIAGRAMA DE ARQUITECTURA DEL PROYECTO**  
-Esta imagen debe mostrar el flujo completo desde el origen de datos hasta Power BI.  
-Puedes hacer un diagrama propio en draw.io, PowerPoint, Canva o usar una captura propia si la tienes.  
-Guardar la imagen como:
+📌 **IMAGEN 04 - DIAGRAMA DE ARQUITECTURA DEL PROYECTO**
 
-```text
-docs/images/04_architecture_diagram.png
-```
+Descripción exacta de la imagen que debes pegar aquí:
 
-Pegar aquí:
+- Diagrama propio que muestre el flujo completo.
+- Debe verse algo parecido a:
+  - Kaggle / ADLS Gen2
+  - OneLake Shortcut
+  - Bronze
+  - Silver
+  - Gold
+  - Warehouse
+  - Semantic Model
+  - Power BI
 
-![Arquitectura del proyecto](docs/images/04_architecture_diagram.png)
+**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -242,13 +257,15 @@ En este proyecto se utilizaron las siguientes tecnologías y componentes:
 | OneLake | Capa de almacenamiento unificada de Fabric |
 | OneLake Shortcut | Conexión entre Fabric y ADLS Gen2 |
 | Lakehouse | Almacenamiento de datos en capas Bronze, Silver y Gold |
-| Data Factory Pipelines | Orquestación de ingesta y transformación |
+| Warehouse | Almacenamiento analítico para consumo de datos |
+| Data Factory Pipelines | Orquestación de ingesta, transformación y reportes |
 | Fabric Notebooks | Desarrollo de procesos de ingesta y transformación |
-| PySpark | Procesamiento de datos distribuido |
+| PySpark | Procesamiento y transformación de datos |
 | Spark DataFrames | Lectura, limpieza y transformación de datos |
 | Delta Lake | Escritura de tablas Delta |
 | Dataflows Gen2 | Transformaciones visuales con Power Query |
 | Power Query | Transformación de datos en Dataflows Gen2 |
+| Copy Job | Carga/copia de datos como alternativa en Fabric |
 | Semantic Model | Modelo analítico para Power BI |
 | Power BI | Reportes y dashboard |
 | Task Flow | Organización visual del proyecto |
@@ -257,73 +274,100 @@ En este proyecto se utilizaron las siguientes tecnologías y componentes:
 
 ---
 
-## Estructura del repositorio
+## Estructura del proyecto en Microsoft Fabric
 
-Estructura sugerida del repositorio:
+El workspace fue organizado en carpetas para separar los componentes principales del proyecto.
 
 ```text
-smart-device-analytics-fabric/
+Smart_Device_Analytics_WS/
 │
-├── notebooks/
+├── copy_job/
+│   └── cj_smart_device
+│
+├── dataflow gen2/
+│   ├── 01-Transformation_table_brand
+│   ├── 02-Transformation_table_camera
+│   ├── 03-Transformation_table_connectivity
+│   └── 04-Transformation_table_operating_system
+│
+├── notebook/
+│   ├── email/
+│   │   └── email ERROR
+│   │
+│   ├── includes/
+│   │   ├── common_functions
+│   │   └── configuration
+│   │
 │   ├── ingestion/
-│   │   ├── 01_Ingestion_file_service.ipynb
-│   │   ├── 02_Ingestion_file_model.ipynb
-│   │   ├── 03_Ingestion_file_category.ipynb
-│   │   ├── 04_Ingestion_file_camera.ipynb
-│   │   ├── 05_Ingestion_file_brand.ipynb
-│   │   ├── 06_Ingestion_file_operating_system.ipynb
-│   │   ├── 07_Ingestion_file_connectivity.ipynb
-│   │   ├── 08_Ingestion_file_display.ipynb
-│   │   └── 09_Ingestion_file_physical_specs.ipynb
+│   │   ├── 02.Ingestion_file_model
+│   │   ├── 03.Ingestion_file_category
+│   │   ├── 04.Ingestion_file_camera
+│   │   ├── 05.Ingestion_file_brand
+│   │   ├── 06.Ingestion_file_operationg_system
+│   │   ├── 07.Ingestion_file_connectivity
+│   │   ├── 08.Ingestion_file_display
+│   │   └── 09.Ingestion_file_physical_specs
 │   │
 │   └── transformation/
-│       ├── 01_Transformation_table_category.ipynb
-│       ├── 02_Transformation_table_device.ipynb
-│       ├── 03_Transformation_table_model.ipynb
-│       ├── 04_Transformation_table_display.ipynb
-│       ├── 05_Transformation_table_physical_specs.ipynb
-│       └── 06_Transformation_dim_time.ipynb
+│       ├── 01.Transformation_table_category
+│       ├── 02.Transformation_table_device
+│       ├── 03.Transformation_table_model
+│       ├── 04.Transformation_table_display
+│       ├── 05.Transformation_table_physical_specs
+│       └── 06.Create_dim_time
 │
-├── dataflows/
-│   ├── DF_Transformation_Brand.md
-│   ├── DF_Transformation_Camera.md
-│   ├── DF_Transformation_Connectivity.md
-│   └── DF_Transformation_Operating_System.md
+├── pipeline/
+│   ├── pl_ingest_smart_device
+│   ├── pl_process_smart_device
+│   ├── pl_report_smart_data
+│   └── pl_transformation_smart_device
 │
-├── pipelines/
-│   ├── pl_ingest_smart_device.md
-│   ├── pl_transformation_smart_device.md
-│   └── pl_main_smart_device.md
+├── report/
+│   ├── report_device
+│   └── dashboard_smart_device
 │
-├── powerbi/
-│   ├── semantic_model_notes.md
-│   └── report_screenshots.md
-│
-├── docs/
-│   └── images/
-│       ├── 01_dataset_kaggle.png
-│       ├── 02_azure_storage_explorer.png
-│       ├── 03_adls_bronze_folders.png
-│       ├── 04_architecture_diagram.png
-│       ├── 05_workspace_fabric.png
-│       ├── 06_task_flow.png
-│       ├── 07_ingestion_pipeline.png
-│       ├── 08_ingestion_pipeline_success.png
-│       ├── 09_transformation_pipeline.png
-│       ├── 10_transformation_pipeline_success.png
-│       ├── 11_main_pipeline.png
-│       ├── 12_main_pipeline_success.png
-│       ├── 13_lakehouse_silver_tables.png
-│       ├── 14_lakehouse_gold_tables.png
-│       ├── 15_semantic_model.png
-│       ├── 16_powerbi_report.png
-│       ├── 17_dashboard.png
-│       ├── 18_lineage_view.png
-│       └── 19_deployment_pipeline.png
-│
-├── README.md
-└── LICENSE
+├── lh_bronze
+├── lh_silver
+├── lh_gold
+├── wh_smart_device
+└── sm_smart_device_wh
 ```
+
+> Nota: El elemento `06.Ingestion_file_operationg_system` conserva el nombre utilizado dentro del proyecto, aunque contiene un error tipográfico en la palabra `operationg`.
+
+📌 **IMAGEN 05 - ESTRUCTURA GENERAL DEL WORKSPACE EN MICROSOFT FABRIC**
+
+Descripción exacta de la imagen que debes pegar aquí:
+
+- Captura del workspace donde se vean las carpetas:
+  - `copy_job`
+  - `dataflow gen2`
+  - `notebook`
+  - `pipeline`
+  - `report`
+- También deben verse elementos como:
+  - `lh_bronze`
+  - `lh_silver`
+  - `lh_gold`
+  - `wh_smart_device`
+  - `sm_smart_device_wh`
+
+**PEGAR IMAGEN AQUÍ**
+
+---
+
+📌 **IMAGEN 06 - CARPETA NOTEBOOK CON SUBCARPETAS**
+
+Descripción exacta de la imagen que debes pegar aquí:
+
+- Captura dentro de la carpeta `notebook`.
+- Deben verse las carpetas:
+  - `email`
+  - `includes`
+  - `ingestion`
+  - `transformation`
+
+**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -368,18 +412,6 @@ Semantic Model
 Power BI Report / Dashboard
 ```
 
-📌 **IMAGEN 05 - WORKSPACE DE FABRIC CON LOS ELEMENTOS DEL PROYECTO**  
-Esta imagen debe mostrar el área de trabajo de Microsoft Fabric con elementos como Lakehouses, Pipelines, Dataflows, Notebooks, Semantic Model, Report o Dashboard.  
-Guardar la imagen como:
-
-```text
-docs/images/05_workspace_fabric.png
-```
-
-Pegar aquí:
-
-![Workspace de Microsoft Fabric](docs/images/05_workspace_fabric.png)
-
 ---
 
 ## Capa Bronze
@@ -412,30 +444,33 @@ La capa Bronze fue conectada a Microsoft Fabric mediante un **OneLake Shortcut**
 - Creación de Shortcut en OneLake hacia ADLS Gen2.
 - Preparación del Lakehouse Bronze en Fabric.
 
-📌 **IMAGEN 06 - RECURSO DE AZURE / RESOURCE GROUP DEL PROYECTO**  
-Esta imagen debe mostrar el grupo de recursos en Azure y la cuenta de almacenamiento usada para el proyecto.  
-Antes de subirla, tapa el correo, subscription ID y cualquier dato sensible.  
-Guardar la imagen como:
+📌 **IMAGEN 07 - RESOURCE GROUP DE AZURE DEL PROYECTO**
 
-```text
-docs/images/06_azure_resource_group.png
-```
+Descripción exacta de la imagen que debes pegar aquí:
 
-Pegar aquí:
+- Captura del grupo de recursos de Azure.
+- Debe verse la cuenta de almacenamiento usada para el proyecto.
+- Antes de subirla, ocultar:
+  - correo
+  - subscription ID
+  - tenant ID
+  - datos personales
 
-![Resource Group en Azure](docs/images/06_azure_resource_group.png)
+**PEGAR IMAGEN AQUÍ**
 
-📌 **IMAGEN 07 - CARPETAS DE BRONZE EN AZURE DATA LAKE STORAGE GEN2**  
-Esta imagen debe mostrar el contenedor y las carpetas por fecha.  
-Guardar la imagen como:
+---
 
-```text
-docs/images/07_bronze_folders_adls.png
-```
+📌 **IMAGEN 08 - CARPETAS DE BRONZE EN AZURE DATA LAKE STORAGE GEN2**
 
-Pegar aquí:
+Descripción exacta de la imagen que debes pegar aquí:
 
-![Carpetas Bronze en ADLS Gen2](docs/images/07_bronze_folders_adls.png)
+- Captura del contenedor `smart-device`.
+- Debe verse:
+  - `bronze-data`
+  - carpetas por fecha
+  - archivos o estructura del dataset
+
+**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -464,7 +499,6 @@ Los notebooks de ingesta procesaron los siguientes archivos:
 
 | Archivo | Descripción |
 |---|---|
-| Device | Información principal del dispositivo |
 | Model | Información de modelos |
 | Category | Categorías de dispositivos |
 | Camera | Características de cámara |
@@ -474,17 +508,14 @@ Los notebooks de ingesta procesaron los siguientes archivos:
 | Display | Características de pantalla |
 | Physical Specs | Especificaciones físicas |
 
-📌 **IMAGEN 08 - LAKEHOUSE SILVER CON TABLAS GENERADAS**  
-Esta imagen debe mostrar las tablas generadas en la capa Silver.  
-Guardar la imagen como:
+📌 **IMAGEN 09 - LAKEHOUSE SILVER CON TABLAS GENERADAS**
 
-```text
-docs/images/08_lakehouse_silver_tables.png
-```
+Descripción exacta de la imagen que debes pegar aquí:
 
-Pegar aquí:
+- Captura del Lakehouse `lh_silver`.
+- Deben verse las tablas generadas por los notebooks de ingesta.
 
-![Tablas en Lakehouse Silver](docs/images/08_lakehouse_silver_tables.png)
+**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -510,25 +541,92 @@ Algunas de las tablas generadas fueron:
 | dim_physical_specs | Dimensión | Especificaciones físicas |
 | dim_time | Dimensión | Dimensión de calendario |
 
-📌 **IMAGEN 09 - LAKEHOUSE GOLD O WAREHOUSE CON TABLAS FINALES**  
-Esta imagen debe mostrar las tablas finales de la capa Gold o Warehouse.  
-Guardar la imagen como:
+📌 **IMAGEN 10 - LAKEHOUSE GOLD CON TABLAS FINALES**
 
-```text
-docs/images/09_lakehouse_gold_tables.png
-```
+Descripción exacta de la imagen que debes pegar aquí:
 
-Pegar aquí:
+- Captura de `lh_gold`.
+- Deben verse tablas como:
+  - `fact_device`
+  - `dim_category`
+  - `dim_model`
+  - `dim_brand`
+  - `dim_camera`
+  - `dim_display`
+  - `dim_operating_system`
+  - `dim_physical_specs`
+  - `dim_time`
 
-![Tablas finales en Gold](docs/images/09_lakehouse_gold_tables.png)
+**PEGAR IMAGEN AQUÍ**
 
 ---
 
-## Ingesta de datos
+## Notebooks
 
-La ingesta fue desarrollada con **Microsoft Fabric Notebooks** utilizando **PySpark**.
+Los notebooks fueron organizados en cuatro grupos:
 
-Cada notebook fue responsable de procesar un archivo específico desde la capa Bronze hacia la capa Silver.
+1. Notebooks de configuración e includes.
+2. Notebook de email.
+3. Notebooks de ingesta.
+4. Notebooks de transformación.
+
+---
+
+### 1. Notebooks de configuración e includes
+
+| Notebook | Uso |
+|---|---|
+| configuration | Centraliza parámetros o rutas utilizadas por el proyecto |
+| common_functions | Contiene funciones reutilizables para ingesta y transformación |
+
+Estos notebooks permiten reutilizar código y evitar repetir lógica en cada notebook de ingesta o transformación.
+
+📌 **IMAGEN 11 - CARPETA INCLUDES CON CONFIGURATION Y COMMON_FUNCTIONS**
+
+Descripción exacta de la imagen que debes pegar aquí:
+
+- Captura dentro de `notebook/includes`.
+- Deben verse:
+  - `configuration`
+  - `common_functions`
+
+**PEGAR IMAGEN AQUÍ**
+
+---
+
+### 2. Notebook de email
+
+| Notebook | Uso |
+|---|---|
+| email ERROR | Envía notificación por correo cuando ocurre un error controlado |
+
+Este notebook se utiliza desde el pipeline de ingesta cuando la validación de carpeta falla.
+
+📌 **IMAGEN 12 - NOTEBOOK EMAIL ERROR**
+
+Descripción exacta de la imagen que debes pegar aquí:
+
+- Captura del notebook `email ERROR`.
+- Debe verse que está relacionado con el envío de correo o notificación de error.
+
+**PEGAR IMAGEN AQUÍ**
+
+---
+
+### 3. Notebooks de ingesta
+
+Los notebooks de ingesta leen datos desde la capa Bronze y escriben tablas en la capa Silver.
+
+| Notebook | Descripción |
+|---|---|
+| 02.Ingestion_file_model | Ingesta de modelos |
+| 03.Ingestion_file_category | Ingesta de categorías |
+| 04.Ingestion_file_camera | Ingesta de cámaras |
+| 05.Ingestion_file_brand | Ingesta de marcas |
+| 06.Ingestion_file_operationg_system | Ingesta de sistemas operativos |
+| 07.Ingestion_file_connectivity | Ingesta de conectividad |
+| 08.Ingestion_file_display | Ingesta de pantallas |
+| 09.Ingestion_file_physical_specs | Ingesta de especificaciones físicas |
 
 ### Flujo general de un notebook de ingesta
 
@@ -557,11 +655,7 @@ Agregar file_date y environment
 Escribir tabla Delta en Silver
 ```
 
-### Parametrización de notebooks
-
-Los notebooks fueron parametrizados para poder ser ejecutados desde pipelines.
-
-Parámetros principales:
+### Parámetros usados en notebooks de ingesta
 
 ```text
 file_date
@@ -575,60 +669,41 @@ file_date = 2025-07-07
 environment = Development
 ```
 
-Esto permite reutilizar el mismo proceso para distintas fechas de carga y distintos ambientes.
+📌 **IMAGEN 13 - CARPETA INGESTION CON NOTEBOOKS DE INGESTA**
 
-### Notebooks de ingesta
+Descripción exacta de la imagen que debes pegar aquí:
 
-| Notebook | Objetivo |
-|---|---|
-| Ingestion Device File | Ingestar archivo de dispositivos |
-| Ingestion Model File | Ingestar archivo de modelos |
-| Ingestion Category File | Ingestar archivo de categorías |
-| Ingestion Camera File | Ingestar archivo de cámaras |
-| Ingestion Brand File | Ingestar archivo de marcas |
-| Ingestion Operating System File | Ingestar archivo de sistemas operativos |
-| Ingestion Connectivity File | Ingestar archivo de conectividad |
-| Ingestion Display File | Ingestar archivo de pantallas |
-| Ingestion Physical Specs File | Ingestar archivo de especificaciones físicas |
+- Captura dentro de `notebook/ingestion`.
+- Deben verse los notebooks de ingesta listados.
 
-📌 **IMAGEN 10 - NOTEBOOK DE INGESTA ABIERTO EN FABRIC**  
-Esta imagen debe mostrar un notebook de ingesta con código PySpark.  
-Guardar la imagen como:
-
-```text
-docs/images/10_ingestion_notebook.png
-```
-
-Pegar aquí:
-
-![Notebook de ingesta](docs/images/10_ingestion_notebook.png)
+**PEGAR IMAGEN AQUÍ**
 
 ---
 
-## Transformación de datos
+📌 **IMAGEN 14 - NOTEBOOK DE INGESTA CON CÓDIGO PYSPARK**
 
-La transformación fue realizada utilizando una combinación de:
+Descripción exacta de la imagen que debes pegar aquí:
 
-- Notebooks con PySpark.
-- Dataflows Gen2.
-- Power Query.
+- Captura de un notebook de ingesta abierto.
+- Debe verse código PySpark leyendo datos, aplicando schema o escribiendo en Delta.
+- No es necesario mostrar todo el notebook, solo una parte representativa.
 
-Los notebooks se utilizaron principalmente para transformaciones con lógica más controlada, mientras que los Dataflows Gen2 fueron usados para transformaciones visuales y directas.
+**PEGAR IMAGEN AQUÍ**
 
-### Transformaciones implementadas
+---
 
-| Proceso | Herramienta |
+### 4. Notebooks de transformación
+
+Los notebooks de transformación leen datos desde Silver y generan tablas finales en Gold.
+
+| Notebook | Descripción |
 |---|---|
-| Transformation Category | Notebook |
-| Transformation Device | Notebook |
-| Transformation Model | Notebook |
-| Transformation Display | Notebook |
-| Transformation Physical Specs | Notebook |
-| Transformation Dim Time | Notebook |
-| DF Transformation Brand | Dataflow Gen2 |
-| DF Transformation Camera | Dataflow Gen2 |
-| DF Transformation Connectivity | Dataflow Gen2 |
-| DF Transformation Operating System | Dataflow Gen2 |
+| 01.Transformation_table_category | Transformación de categoría |
+| 02.Transformation_table_device | Transformación de dispositivo |
+| 03.Transformation_table_model | Transformación de modelo |
+| 04.Transformation_table_display | Transformación de pantalla |
+| 05.Transformation_table_physical_specs | Transformación de especificaciones físicas |
+| 06.Create_dim_time | Creación de dimensión de tiempo |
 
 ### Flujo general de transformación
 
@@ -651,29 +726,99 @@ Generar dimensiones y tabla de hechos
 Escribir tablas finales en Gold
 ```
 
-📌 **IMAGEN 11 - NOTEBOOK DE TRANSFORMACIÓN ABIERTO EN FABRIC**  
-Esta imagen debe mostrar un notebook de transformación.  
-Guardar la imagen como:
+📌 **IMAGEN 15 - CARPETA TRANSFORMATION CON NOTEBOOKS DE TRANSFORMACIÓN**
+
+Descripción exacta de la imagen que debes pegar aquí:
+
+- Captura dentro de `notebook/transformation`.
+- Deben verse los notebooks de transformación.
+
+**PEGAR IMAGEN AQUÍ**
+
+---
+
+📌 **IMAGEN 16 - NOTEBOOK DE TRANSFORMACIÓN CON CÓDIGO PYSPARK**
+
+Descripción exacta de la imagen que debes pegar aquí:
+
+- Captura de un notebook de transformación abierto.
+- Puede ser:
+  - `02.Transformation_table_device`
+  - `03.Transformation_table_model`
+  - `06.Create_dim_time`
+- Debe verse lógica de transformación, merge, escritura o creación de dimensión.
+
+**PEGAR IMAGEN AQUÍ**
+
+---
+
+## Dataflows Gen2
+
+Se utilizaron **Dataflows Gen2** para transformar algunas tablas de referencia de forma visual usando Power Query.
+
+Los Dataflows creados fueron:
+
+| Dataflow Gen2 | Objetivo |
+|---|---|
+| 01-Transformation_table_brand | Transformar datos de marcas |
+| 02-Transformation_table_camera | Transformar datos de cámaras |
+| 03-Transformation_table_connectivity | Transformar datos de conectividad |
+| 04-Transformation_table_operating_system | Transformar datos de sistemas operativos |
+
+Estos Dataflows forman parte del pipeline de transformación y cargan datos hacia la capa Gold.
+
+📌 **IMAGEN 17 - CARPETA DATAFLOW GEN2 CON LOS 4 DATAFLOWS**
+
+Descripción exacta de la imagen que debes pegar aquí:
+
+- Captura dentro de `dataflow gen2`.
+- Deben verse:
+  - `01-Transformation_table_brand`
+  - `02-Transformation_table_camera`
+  - `03-Transformation_table_connectivity`
+  - `04-Transformation_table_operating_system`
+
+**PEGAR IMAGEN AQUÍ**
+
+---
+
+📌 **IMAGEN 18 - EJEMPLO DE DATAFLOW GEN2 ABIERTO**
+
+Descripción exacta de la imagen que debes pegar aquí:
+
+- Captura de un Dataflow Gen2 abierto.
+- Debe verse Power Query o el flujo de transformación.
+- Puede ser cualquiera de:
+  - Brand
+  - Camera
+  - Connectivity
+  - Operating System
+
+**PEGAR IMAGEN AQUÍ**
+
+---
+
+## Copy Job
+
+Además del flujo principal con notebooks, Dataflows Gen2 y pipelines, también se practicó el uso de un elemento de tipo **Copy Job** en Microsoft Fabric.
+
+El elemento creado fue:
 
 ```text
-docs/images/11_transformation_notebook.png
+cj_smart_device
 ```
 
-Pegar aquí:
+Este componente permitió explorar una alternativa para copiar datos dentro del ecosistema de Fabric y comparar sus limitaciones frente a pipelines y notebooks.
 
-![Notebook de transformación](docs/images/11_transformation_notebook.png)
+📌 **IMAGEN 19 - COPY JOB CJ_SMART_DEVICE**
 
-📌 **IMAGEN 12 - DATAFLOW GEN2 DE TRANSFORMACIÓN**  
-Esta imagen debe mostrar un Dataflow Gen2 usado para transformar Brand, Camera, Connectivity u Operating System.  
-Guardar la imagen como:
+Descripción exacta de la imagen que debes pegar aquí:
 
-```text
-docs/images/12_dataflow_gen2.png
-```
+- Captura dentro de la carpeta `copy_job`.
+- Debe verse el elemento `cj_smart_device`.
+- También puede ser una captura del Copy Job abierto.
 
-Pegar aquí:
-
-![Dataflow Gen2](docs/images/12_dataflow_gen2.png)
+**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -715,21 +860,35 @@ Esto permite procesar únicamente la carpeta correspondiente a esa fecha en la c
 
 La orquestación fue implementada con **Data Factory Pipelines** dentro de Microsoft Fabric.
 
-Se crearon tres pipelines principales:
+Los pipelines creados fueron:
 
 | Pipeline | Descripción |
 |---|---|
-| pl_ingest_smart_device | Ejecuta el proceso de ingesta |
-| pl_transformation_smart_device | Ejecuta el proceso de transformación |
-| pl_main_smart_device | Orquesta el flujo completo invocando ingesta y transformación |
+| pl_ingest_smart_device | Ejecuta el proceso de ingesta desde Bronze hacia Silver |
+| pl_transformation_smart_device | Ejecuta transformaciones desde Silver hacia Gold |
+| pl_process_smart_device | Pipeline principal que invoca ingesta y transformación |
+| pl_report_smart_data | Pipeline relacionado con automatización del proceso de reporte |
+
+📌 **IMAGEN 20 - CARPETA PIPELINE CON LAS CANALIZACIONES CREADAS**
+
+Descripción exacta de la imagen que debes pegar aquí:
+
+- Captura dentro de `pipeline`.
+- Deben verse:
+  - `pl_ingest_smart_device`
+  - `pl_process_smart_device`
+  - `pl_report_smart_data`
+  - `pl_transformation_smart_device`
+
+**PEGAR IMAGEN AQUÍ**
 
 ---
 
-## Pipeline de ingesta
+### Pipeline de ingesta
 
-El pipeline de ingesta valida primero si existe la carpeta correspondiente a la fecha de procesamiento.
+El pipeline `pl_ingest_smart_device` valida primero si existe la carpeta de datos correspondiente a la fecha de procesamiento.
 
-### Flujo del pipeline de ingesta
+Flujo:
 
 ```text
 Get Folder Details
@@ -739,58 +898,60 @@ If Condition
         |
         |-- True  → Ejecutar notebooks de ingesta
         |
-        |-- False → Enviar email de error
+        |-- False → Ejecutar notebook email ERROR
 ```
 
 Si la carpeta existe, se ejecutan los notebooks de ingesta.
 
-Si la carpeta no existe, se ejecuta una actividad de notificación por correo.
+Si la carpeta no existe, se ejecuta la notificación de error.
 
-📌 **IMAGEN 13 - PIPELINE DE INGESTA COMPLETO**  
-Esta imagen debe mostrar el pipeline de ingesta con Get Folder Details, If Condition, notebooks y email de error.  
-Guardar la imagen como:
+📌 **IMAGEN 21 - PL_INGEST_SMART_DEVICE ABIERTO**
 
-```text
-docs/images/13_ingestion_pipeline.png
-```
+Descripción exacta de la imagen que debes pegar aquí:
 
-Pegar aquí:
+- Captura del pipeline de ingesta abierto.
+- Deben verse:
+  - `Get Folder Details`
+  - `If Condition`
+  - Notebooks de ingesta
+  - Ruta de error
 
-![Pipeline de ingesta](docs/images/13_ingestion_pipeline.png)
-
-📌 **IMAGEN 14 - VALIDACIÓN IF CONDITION DEL PIPELINE DE INGESTA**  
-Esta imagen debe mostrar claramente la condición `True` con los notebooks y la condición `False` con email de error.  
-Guardar la imagen como:
-
-```text
-docs/images/14_ingestion_if_condition.png
-```
-
-Pegar aquí:
-
-![Validación If Condition](docs/images/14_ingestion_if_condition.png)
-
-📌 **IMAGEN 15 - EJECUCIÓN EXITOSA DEL PIPELINE DE INGESTA**  
-Esta imagen debe mostrar las actividades de ingesta en estado correcto.  
-Guardar la imagen como:
-
-```text
-docs/images/15_ingestion_pipeline_success.png
-```
-
-Pegar aquí:
-
-![Ejecución exitosa de ingesta](docs/images/15_ingestion_pipeline_success.png)
+**PEGAR IMAGEN AQUÍ**
 
 ---
 
-## Pipeline de transformación
+📌 **IMAGEN 22 - IF CONDITION CON RUTA TRUE Y RUTA FALSE**
 
-El pipeline de transformación ejecuta los procesos que generan la capa Gold.
+Descripción exacta de la imagen que debes pegar aquí:
 
-Este pipeline incluye notebooks y Dataflows Gen2.
+- Captura dentro de la condición IF.
+- Debe verse:
+  - En `True`: actividades de ingesta.
+  - En `False`: `emailError` o notebook de email.
 
-### Procesos dentro del pipeline de transformación
+**PEGAR IMAGEN AQUÍ**
+
+---
+
+📌 **IMAGEN 23 - PL_INGEST_SMART_DEVICE EJECUTADO CORRECTAMENTE**
+
+Descripción exacta de la imagen que debes pegar aquí:
+
+- Captura de la salida del pipeline de ingesta.
+- Deben verse las actividades en estado:
+  - Correcto
+  - Verde
+  - Successful
+
+**PEGAR IMAGEN AQUÍ**
+
+---
+
+### Pipeline de transformación
+
+El pipeline `pl_transformation_smart_device` ejecuta notebooks y Dataflows Gen2 para crear la capa Gold.
+
+Procesos dentro del pipeline:
 
 - Transformación de modelos.
 - Transformación de especificaciones físicas.
@@ -803,79 +964,88 @@ Este pipeline incluye notebooks y Dataflows Gen2.
 - Transformación de dispositivos.
 - Creación de dimensión de tiempo.
 
-📌 **IMAGEN 16 - PIPELINE DE TRANSFORMACIÓN COMPLETO**  
-Esta imagen debe mostrar todos los notebooks y Dataflows Gen2 del pipeline de transformación.  
-Guardar la imagen como:
+📌 **IMAGEN 24 - PL_TRANSFORMATION_SMART_DEVICE ABIERTO**
 
-```text
-docs/images/16_transformation_pipeline.png
-```
+Descripción exacta de la imagen que debes pegar aquí:
 
-Pegar aquí:
+- Captura del pipeline de transformación.
+- Deben verse notebooks y Dataflows Gen2.
 
-![Pipeline de transformación](docs/images/16_transformation_pipeline.png)
-
-📌 **IMAGEN 17 - EJECUCIÓN EXITOSA DEL PIPELINE DE TRANSFORMACIÓN**  
-Esta imagen debe mostrar las actividades de transformación en verde o estado correcto.  
-Guardar la imagen como:
-
-```text
-docs/images/17_transformation_pipeline_success.png
-```
-
-Pegar aquí:
-
-![Ejecución exitosa de transformación](docs/images/17_transformation_pipeline_success.png)
+**PEGAR IMAGEN AQUÍ**
 
 ---
 
-## Pipeline principal
+📌 **IMAGEN 25 - PL_TRANSFORMATION_SMART_DEVICE EJECUTADO CORRECTAMENTE**
 
-El pipeline principal automatiza el flujo completo del proyecto.
+Descripción exacta de la imagen que debes pegar aquí:
 
-Este pipeline invoca primero el pipeline de ingesta y luego el pipeline de transformación.
+- Captura de la salida del pipeline de transformación.
+- Deben verse actividades en verde o con estado `Correcto`.
 
-### Flujo del pipeline principal
+**PEGAR IMAGEN AQUÍ**
+
+---
+
+### Pipeline principal
+
+El pipeline `pl_process_smart_device` invoca primero la ingesta y luego la transformación.
+
+Flujo:
 
 ```text
-Invoke Ingestion Pipeline
+Invoke Ingestion
         |
         v
-Invoke Transformation Pipeline
+Invoke Transformation
 ```
 
-Ambos pipelines reciben los parámetros:
+Este pipeline permite ejecutar el proceso completo de forma automatizada.
+
+Parámetros principales:
 
 ```text
 file_date
 environment
 ```
 
-Esto permite mantener una misma fecha y ambiente durante toda la ejecución.
+📌 **IMAGEN 26 - PL_PROCESS_SMART_DEVICE CON INVOKE INGESTION E INVOKE TRANSFORMATION**
 
-📌 **IMAGEN 18 - PIPELINE PRINCIPAL CON INVOCACIÓN DE INGESTA Y TRANSFORMACIÓN**  
-Esta imagen debe mostrar las dos actividades: Invoke Ingestion e Invoke Transformation.  
-Guardar la imagen como:
+Descripción exacta de la imagen que debes pegar aquí:
 
-```text
-docs/images/18_main_pipeline.png
-```
+- Captura del pipeline principal.
+- Deben verse dos actividades:
+  - `Invoke Ingestion`
+  - `Invoke Transformation`
 
-Pegar aquí:
+**PEGAR IMAGEN AQUÍ**
 
-![Pipeline principal](docs/images/18_main_pipeline.png)
+---
 
-📌 **IMAGEN 19 - EJECUCIÓN EXITOSA DEL PIPELINE PRINCIPAL**  
-Esta imagen debe mostrar el pipeline principal ejecutado correctamente.  
-Guardar la imagen como:
+📌 **IMAGEN 27 - PL_PROCESS_SMART_DEVICE EJECUTADO CORRECTAMENTE**
 
-```text
-docs/images/19_main_pipeline_success.png
-```
+Descripción exacta de la imagen que debes pegar aquí:
 
-Pegar aquí:
+- Captura del pipeline principal en ejecución exitosa.
+- Debe verse el estado de la canalización en correcto.
 
-![Ejecución exitosa del pipeline principal](docs/images/19_main_pipeline_success.png)
+**PEGAR IMAGEN AQUÍ**
+
+---
+
+### Pipeline de reporte
+
+El pipeline `pl_report_smart_data` fue utilizado para automatizar el proceso relacionado con la capa de análisis y reporte.
+
+Este pipeline complementa el flujo principal, permitiendo integrar el procesamiento de datos con los elementos analíticos del proyecto.
+
+📌 **IMAGEN 28 - PL_REPORT_SMART_DATA**
+
+Descripción exacta de la imagen que debes pegar aquí:
+
+- Captura del pipeline `pl_report_smart_data`.
+- Debe verse la actividad o flujo relacionado con el reporte.
+
+**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -901,17 +1071,35 @@ Enviar email de error
 
 Esto evita ejecutar procesos sobre datos inexistentes y permite notificar el problema.
 
-📌 **IMAGEN 20 - ACTIVIDAD DE EMAIL ERROR**  
-Esta imagen debe mostrar la actividad que envía el correo cuando falla la validación.  
-Guardar la imagen como:
+📌 **IMAGEN 29 - ACTIVIDAD O NOTEBOOK DE EMAIL ERROR**
+
+Descripción exacta de la imagen que debes pegar aquí:
+
+- Captura del notebook `email ERROR` o de la actividad del pipeline que lo ejecuta.
+- Debe quedar claro que el flujo envía un correo cuando falla la validación.
+
+**PEGAR IMAGEN AQUÍ**
+
+---
+
+## Warehouse
+
+Además de los Lakehouses, el proyecto incluye un Warehouse:
 
 ```text
-docs/images/20_email_error_activity.png
+wh_smart_device
 ```
 
-Pegar aquí:
+El Warehouse fue utilizado como parte de la capa analítica del proyecto y se integra con el modelo semántico y Power BI.
 
-![Actividad de email error](docs/images/20_email_error_activity.png)
+📌 **IMAGEN 30 - WAREHOUSE WH_SMART_DEVICE**
+
+Descripción exacta de la imagen que debes pegar aquí:
+
+- Captura del elemento `wh_smart_device`.
+- Puede ser la vista del Warehouse o sus tablas.
+
+**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -920,6 +1108,12 @@ Pegar aquí:
 Después de generar la capa Gold, se creó un **Semantic Model** en Microsoft Fabric.
 
 El modelo semántico permite organizar las tablas, relaciones y métricas para su consumo desde Power BI.
+
+Elemento creado:
+
+```text
+sm_smart_device_wh
+```
 
 ### Tablas incluidas en el modelo
 
@@ -943,17 +1137,17 @@ dim_time
 
 El modelo tiene una estructura tipo estrella, donde `fact_device` funciona como tabla central y se relaciona con las tablas de dimensión.
 
-📌 **IMAGEN 21 - MODELO SEMÁNTICO CON RELACIONES**  
-Esta imagen debe ser la captura donde aparece `fact_device` al centro y las dimensiones alrededor.  
-Guardar la imagen como:
+📌 **IMAGEN 31 - MODELO SEMÁNTICO CON RELACIONES**
 
-```text
-docs/images/21_semantic_model_relationships.png
-```
+Descripción exacta de la imagen que debes pegar aquí:
 
-Pegar aquí:
+- Captura del modelo semántico.
+- Debe verse:
+  - `fact_device` en el centro.
+  - Dimensiones alrededor.
+  - Relaciones entre tablas.
 
-![Modelo semántico con relaciones](docs/images/21_semantic_model_relationships.png)
+**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -961,7 +1155,14 @@ Pegar aquí:
 
 Con el modelo semántico se construyó un reporte en Power BI para analizar características de los dispositivos inteligentes.
 
-El reporte permite visualizar métricas relacionadas con:
+Elementos creados:
+
+| Elemento | Descripción |
+|---|---|
+| report_device | Reporte de análisis de dispositivos |
+| dashboard_smart_device | Dashboard publicado a partir del reporte |
+
+El reporte permite analizar características como:
 
 - Resolución de video.
 - Píxeles efectivos de cámara.
@@ -969,29 +1170,30 @@ El reporte permite visualizar métricas relacionadas con:
 - Meses de lanzamiento.
 - Cantidad de dispositivos.
 
-📌 **IMAGEN 22 - REPORTE DE POWER BI**  
-Esta imagen debe mostrar el reporte con visualizaciones de barras.  
-Guardar la imagen como:
+📌 **IMAGEN 32 - REPORTE REPORT_DEVICE**
 
-```text
-docs/images/22_powerbi_report.png
-```
+Descripción exacta de la imagen que debes pegar aquí:
 
-Pegar aquí:
+- Captura del reporte `report_device`.
+- Deben verse gráficos de análisis.
+- Por ejemplo:
+  - video recording
+  - effective pixel
+  - refresh rate
+  - month name
 
-![Reporte de Power BI](docs/images/22_powerbi_report.png)
+**PEGAR IMAGEN AQUÍ**
 
-📌 **IMAGEN 23 - DASHBOARD DE POWER BI**  
-Esta imagen debe mostrar el dashboard publicado en Microsoft Fabric.  
-Guardar la imagen como:
+---
 
-```text
-docs/images/23_powerbi_dashboard.png
-```
+📌 **IMAGEN 33 - DASHBOARD DASHBOARD_SMART_DEVICE**
 
-Pegar aquí:
+Descripción exacta de la imagen que debes pegar aquí:
 
-![Dashboard de Power BI](docs/images/23_powerbi_dashboard.png)
+- Captura del dashboard `dashboard_smart_device`.
+- Deben verse visualizaciones publicadas en el dashboard.
+
+**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -1003,26 +1205,31 @@ El Task Flow permite representar el proceso desde los datos de origen hasta la v
 
 ### Etapas representadas en el Task Flow
 
-- Datos de bronze.
-- Proceso de ingesta.
+- Datos de bronce.
+- Proceso Ingesta.
 - Datos plateados.
 - Transformación adicional.
 - Datos de oro.
 - Warehouse.
 - Visualización de datos.
-- Proceso Smart Data.
+- Process Smart Data.
 
-📌 **IMAGEN 24 - TASK FLOW DEL PROYECTO**  
-Esta imagen debe ser la captura donde aparecen los bloques: Datos de bronce, Proceso Ingesta, Datos plateados, Transformación adicional, Datos de oro, Visualización de datos y Warehouse.  
-Guardar la imagen como:
+📌 **IMAGEN 34 - TASK FLOW DEL PROYECTO**
 
-```text
-docs/images/24_task_flow.png
-```
+Descripción exacta de la imagen que debes pegar aquí:
 
-Pegar aquí:
+- Captura del Task Flow.
+- Deben verse bloques como:
+  - `Datos de bronce`
+  - `Proceso Ingesta`
+  - `Datos plateados`
+  - `Transformación adicional`
+  - `Datos de oro`
+  - `Warehouse`
+  - `Visualización de datos`
+  - `Process Smart Data`
 
-![Task Flow del proyecto](docs/images/24_task_flow.png)
+**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -1039,17 +1246,20 @@ Esta vista permite entender cómo se conectan los datos desde el origen hasta lo
 - Identificar impacto ante cambios.
 - Documentar el flujo completo de la solución.
 
-📌 **IMAGEN 25 - LINEAGE VIEW DEL PROYECTO**  
-Esta imagen debe mostrar las dependencias entre los elementos del workspace.  
-Guardar la imagen como:
+📌 **IMAGEN 35 - LINEAGE VIEW DEL PROYECTO**
 
-```text
-docs/images/25_lineage_view.png
-```
+Descripción exacta de la imagen que debes pegar aquí:
 
-Pegar aquí:
+- Captura de Lineage View.
+- Deben verse conexiones entre:
+  - Lakehouses
+  - Pipelines
+  - Warehouse
+  - Semantic Model
+  - Report
+  - Dashboard
 
-![Lineage View](docs/images/25_lineage_view.png)
+**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -1073,17 +1283,18 @@ Esto permite simular un ciclo de vida más profesional para proyectos de datos y
 | Test | Workspace de pruebas |
 | Production | Workspace de producción |
 
-📌 **IMAGEN 26 - DEPLOYMENT PIPELINE DEV TEST PROD**  
-Esta imagen debe mostrar las tres etapas: Development, Test y Production, con implementación correcta.  
-Guardar la imagen como:
+📌 **IMAGEN 36 - DEPLOYMENT PIPELINE DEV TEST PROD**
 
-```text
-docs/images/26_deployment_pipeline.png
-```
+Descripción exacta de la imagen que debes pegar aquí:
 
-Pegar aquí:
+- Captura del Deployment Pipeline.
+- Deben verse las tres etapas:
+  - Development
+  - Test
+  - Production
+- Debe verse implementación correcta o exitosa.
 
-![Deployment Pipeline](docs/images/26_deployment_pipeline.png)
+**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -1098,6 +1309,7 @@ La automatización permite ejecutar el flujo completo sin correr manualmente cad
 - Pipeline de ingesta.
 - Pipeline de transformación.
 - Pipeline principal.
+- Pipeline de reporte.
 - Paso de parámetros entre pipelines.
 - Validación previa de carpetas.
 - Notificación por correo ante error.
@@ -1145,7 +1357,7 @@ environment
 
 Estos parámetros fueron enviados desde los pipelines hacia los notebooks.
 
-Resultado:
+**Resultado**
 
 ```text
 El mismo notebook puede ejecutarse para diferentes fechas y ambientes.
@@ -1177,7 +1389,7 @@ Ejemplo conceptual:
 df = add_ingestion_date(df, file_date)
 ```
 
-Resultado:
+**Resultado**
 
 ```text
 Los notebooks de ingesta pudieron ejecutarse correctamente.
@@ -1215,7 +1427,7 @@ En algunos casos se eliminaron columnas innecesarias antes de escribir.
 
 En otros casos se utilizó una escritura con actualización de esquema cuando era necesario.
 
-Resultado:
+**Resultado**
 
 ```text
 Las tablas Delta pudieron escribirse correctamente.
@@ -1241,7 +1453,7 @@ Se estaba utilizando una variable que no había sido creada con ese nombre.
 
 Se corrigió el nombre del DataFrame y se definió correctamente antes de escribir la tabla final.
 
-Resultado:
+**Resultado**
 
 ```text
 La transformación de Device pudo ejecutarse correctamente.
@@ -1267,7 +1479,7 @@ Algunos notebooks contenían metadatos incompatibles con el importador de Micros
 
 Se recrearon versiones limpias de los notebooks, eliminando metadatos incompatibles.
 
-Resultado:
+**Resultado**
 
 ```text
 Los notebooks pudieron importarse correctamente en Microsoft Fabric.
@@ -1293,7 +1505,7 @@ Se estaban ejecutando varias sesiones Spark al mismo tiempo dentro de una capaci
 
 Se controló mejor la ejecución de notebooks y pipelines para evitar exceso de concurrencia.
 
-Resultado:
+**Resultado**
 
 ```text
 Los procesos pudieron ejecutarse sin saturar la capacidad disponible.
@@ -1321,7 +1533,7 @@ Eliminar columna envrionment
 
 Se revisaron los pasos de transformación en Power Query y se corrigieron para trabajar con las columnas correctas.
 
-Resultado:
+**Resultado**
 
 ```text
 Los Dataflows Gen2 pudieron ejecutarse correctamente.
@@ -1351,7 +1563,7 @@ pl_ingest_smart_device
 pl_transformation_smart_device
 ```
 
-Resultado:
+**Resultado**
 
 ```text
 El flujo completo pudo ejecutarse de forma parametrizada.
@@ -1371,13 +1583,18 @@ Resultados principales:
 - Conexión con Fabric mediante OneLake Shortcut.
 - Lakehouse organizado en capas Bronze, Silver y Gold.
 - Notebooks de ingesta desarrollados con PySpark.
+- Notebooks de configuración y funciones reutilizables.
+- Notebook de email para errores controlados.
 - Dataflows Gen2 creados para transformaciones.
+- Copy Job creado como práctica adicional.
 - Notebooks de transformación creados para la capa Gold.
 - Cargas completas e incrementales implementadas.
 - Pipelines de ingesta y transformación automatizados.
 - Pipeline principal ejecutando el flujo completo.
+- Pipeline de reporte creado.
 - Validación previa de carpetas.
 - Notificación por correo en caso de error.
+- Warehouse creado.
 - Modelo semántico creado.
 - Reporte de Power BI creado.
 - Dashboard creado.
@@ -1385,17 +1602,15 @@ Resultados principales:
 - Lineage View revisado.
 - Deployment Pipeline aplicado entre Development, Test y Production.
 
-📌 **IMAGEN 27 - TODOS LOS PROCESOS EN ESTADO CORRECTO**  
-Esta imagen debe mostrar el pipeline o las actividades completas en verde/correcto.  
-Guardar la imagen como:
+📌 **IMAGEN 37 - TODOS LOS PROCESOS EN ESTADO CORRECTO**
 
-```text
-docs/images/27_all_processes_success.png
-```
+Descripción exacta de la imagen que debes pegar aquí:
 
-Pegar aquí:
+- Captura donde se vea el estado correcto de las actividades.
+- Puede ser del pipeline principal, ingesta o transformación.
+- Idealmente debe mostrar varias actividades con check verde.
 
-![Procesos ejecutados correctamente](docs/images/27_all_processes_success.png)
+**PEGAR IMAGEN AQUÍ**
 
 ---
 
@@ -1418,14 +1633,81 @@ Aprendizajes principales:
 - Implementación de cargas completas.
 - Implementación de cargas incrementales.
 - Transformación de datos con Dataflows Gen2.
+- Uso de Copy Job.
 - Orquestación con Data Factory Pipelines.
 - Manejo básico de errores.
 - Envío de notificaciones por correo.
+- Uso de Warehouse.
 - Creación de modelo semántico.
 - Creación de reporte y dashboard en Power BI.
 - Uso de Task Flow para organizar el proyecto.
 - Uso de Lineage View para visualizar dependencias.
 - Uso de Deployment Pipelines para simular ambientes Dev, Test y Prod.
+
+---
+
+## Alcance del aprendizaje aplicado
+
+Durante el desarrollo del proyecto se aplicaron conceptos de varias áreas de Microsoft Fabric:
+
+### Fundamentos de Microsoft Fabric
+
+- Workspaces.
+- Workloads.
+- Roles.
+- Capacidad Trial.
+- OneLake.
+- Lakehouse.
+- Warehouse.
+- SQL Analytics Endpoint.
+
+### Ingeniería de datos
+
+- Apache Spark.
+- PySpark.
+- DataFrames.
+- Notebooks.
+- Schemas.
+- Lectura y escritura de archivos.
+- Tablas Delta.
+- Reutilización de código.
+- Parámetros en notebooks.
+- Funciones reutilizables.
+
+### Transformación de datos
+
+- Dataflows Gen2.
+- Power Query.
+- Transformaciones con notebooks.
+- Cargas completas.
+- Cargas incrementales.
+- Creación de dimensión de tiempo.
+- Creación de dimensiones y tabla de hechos.
+
+### Orquestación
+
+- Pipelines.
+- Actividades de pipeline.
+- Validaciones.
+- Condiciones IF.
+- Invocación de pipelines.
+- Programación.
+- Notificaciones por correo.
+
+### Analítica
+
+- Warehouse.
+- Semantic Model.
+- Power BI Report.
+- Dashboard.
+- Visualizaciones.
+
+### Gobierno y ciclo de vida
+
+- Task Flow.
+- Lineage View.
+- Deployment Pipelines.
+- Workspaces de Development, Test y Production.
 
 ---
 
@@ -1466,10 +1748,16 @@ Componentes implementados:
 | Silver Layer | Completado |
 | Gold Layer | Completado |
 | Ingestion Notebooks | Completado |
+| Includes / Common Functions | Completado |
+| Email Error Notebook | Completado |
 | Transformation Notebooks | Completado |
 | Dataflows Gen2 | Completado |
+| Copy Job | Completado |
 | Pipelines | Completado |
+| Pipeline principal | Completado |
+| Pipeline de reporte | Completado |
 | Email Error Notification | Completado |
+| Warehouse | Completado |
 | Semantic Model | Completado |
 | Power BI Report | Completado |
 | Dashboard | Completado |
@@ -1493,13 +1781,15 @@ Antes de subir capturas al repositorio, se recomienda ocultar:
 - Claves de acceso.
 - URLs privadas.
 - Identificadores internos del workspace.
+- Información privada de Azure.
+- Información privada de Microsoft Fabric.
 
 ---
 
 ## Autor
 
-Desarrollado por: **TU NOMBRE AQUÍ**
+Desarrollado por: jORGE MARROQUIN RODRIGUEZ
 
-LinkedIn: **TU LINKEDIN AQUÍ**
+LinkedIn: www.linkedin.com/in/marroquinrj
 
-GitHub: **TU GITHUB AQUÍ**
+GitHub: awnl12
