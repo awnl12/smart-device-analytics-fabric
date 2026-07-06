@@ -36,7 +36,6 @@ Este proyecto fue desarrollado con fines académicos y de práctica profesional,
 - [Aprendizajes principales](#aprendizajes-principales)
 - [Mejoras futuras](#mejoras-futuras)
 - [Estado del proyecto](#estado-del-proyecto)
-- [Nota sobre seguridad](#nota-sobre-seguridad)
 - [Autor](#autor)
 
 ---
